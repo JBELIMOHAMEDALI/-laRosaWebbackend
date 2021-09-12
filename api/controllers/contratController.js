@@ -234,7 +234,7 @@ router.get("/stat-contrat", async (req, res) => {
      
     else{
       connection.query(
-        "SELECT contrat.numero,contrat.client,contrat.article,contrat.qte,contrat.datecontrat,contrat.premiereecheance,contrat.statucontrat FROM contrat,clients WHERE (((? = clients.nom) AND (clients.region = ?) AND (? NOT LIKE '')) OR (? LIKE '')) AND (((? = clients.nom) AND (clients.zone = ?) AND (? NOT LIKE '')) OR (? LIKE '')) AND(contrat.article = ? OR (? LIKE '')) AND (contrat.montant = ? OR (? IS NULL) OR (? LIKE '')) AND (contrat.chef = ? OR (? LIKE '')) AND (contrat.client = ? OR (? LIKE '')) AND (contrat.recouvreur = ? OR (? LIKE '')) AND (contrat.comm = ? OR (? LIKE '')) AND (contrat.statucontrat = ? OR (? LIKE '')) ",
+        "SELECT contrat.numero,contrat.client,contrat.article,contrat.qte,contrat.datecontrat,contrat.premiereecheance,contrat.statucontrat FROM contrat,clients WHERE (((? = clients.nom) AND (clients.region = ?) AND (? NOT LIKE '')) OR (? LIKE '')) AND (((? = clients.nom) AND (clients.zone = ?) AND (? NOT LIKE '')) OR (? LIKE '')) AND(contrat.article = ? OR (? LIKE '')) AND (contrat.montant = ? OR (? IS NULL) OR (? LIKE '')) AND (contrat.chef = ? OR (? LIKE '')) AND (contrat.client = ? OR (? LIKE '')) AND (contrat.recouvreur = ? OR (? LIKE '')) AND (contrat.comm = ? OR (? LIKE '')) AND (contrat.statucontrat = ? OR (? LIKE '')) GROUP BY contrat.id",
         [
           req.body.client,
           req.body.region,
