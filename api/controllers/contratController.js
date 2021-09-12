@@ -163,15 +163,12 @@ router.get("/getContraBayNumro/:num_contra", async (req, res) => {
   );
 });
 
-
 router.get("/stat-contrat", async (req, res) => {
   try {
-
-
-
     connection.query(
-      "SELECT * FROM contrat WHERE (article = ? OR (? LIKE '')) AND (montant = ? OR (? IS NULL) OR (? LIKE '')) AND (chef = ? OR (? LIKE '')) AND (client = ? OR (? LIKE '')) AND (recouvreur = ? OR (? LIKE '')) AND (comm = ? OR (? LIKE '')) AND (statucontrat = ? OR (? LIKE ''))",
-      [req.body.article,
+      "SELECT contrat.numero,contrat.client,contrat.article,contrat.qte,contrat.datecontrat,contrat.premiereecheance,contrat.statucontrat FROM contrat, clients WHERE (contrat.article = ? OR (? LIKE '')) AND (contrat.montant = ? OR (? IS NULL) OR (? LIKE '')) AND (contrat.chef = ? OR (? LIKE '')) AND (contrat.client = ? OR (? LIKE '')) AND (contrat.recouvreur = ? OR (? LIKE '')) AND (contrat.comm = ? OR (? LIKE '')) AND (contrat.statucontrat = ? OR (? LIKE ''))",
+      [
+        req.body.article,
         req.body.article,
         req.body.montant,
         req.body.montant,
@@ -186,11 +183,10 @@ router.get("/stat-contrat", async (req, res) => {
         req.body.comm,
         req.body.status,
         req.body.status,
-      
       ],
-      (error, rows, fields) => {
+      (_error, rows, fields) => {
         if (rows.length > 0) {
-          res.status(200).send(rows);
+          res.status(200).json(rows);
         } else {
           res.status(404).send("contract not found");
         }
