@@ -111,3 +111,25 @@ router.post("/post", async (req, res) => {
   //   res.status(500).send("server error");
   // }
 });
+
+router.get('/get-payment',async(req,res)=>{
+  try {
+    connection.query("SELECT * FROM payment WHERE Contrat = ? AND PaiedAmmount = '0'",[req.body.contrat],(error , rows , fields)=>{
+      if(rows.length > 0){
+        connection.query("UPDATE payment SET PaiedAmmount = ? , Reste = '0' WHERE id = ? AND Contrat = ?",[rows[0].Mensualite,rows[0].id,rows[0].Contrat],(error , rows , fields)=>{
+          if(rows.affectedRows != 0){
+            res.status(200).send('done');
+          }else{
+            res.status(500).send('somthing went wrong');
+          }
+        })
+
+      }else{
+        res.status(404).send('no payment found for this contract');
+      }
+    })
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('server error');
+  }
+})
