@@ -82,9 +82,9 @@ router.patch("/update/:id", async (req, res) => {
       [req.body.id_num_be, req.body.num_contrat,req.body.zone,req.body.region, req.params.id],
       (error, rows, fields) => {
         if (rows.affectedRows != 0) {
-          res.status(200).send("updated succesffuly");
+          res.status(200).json({msg:"updated succesffuly"});
         } else {
-          res.status(404).send("id not found");
+          res.status(404).json({msg:"id not found"});
         }
       }
     );
