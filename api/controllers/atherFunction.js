@@ -94,6 +94,13 @@ router.get("/statRecu", async (req, res) => {
   }
 });
 
+//start 
+
+
+
+
+
+
 router.get('/stat-A-Paye',async(req,res)=>{
   try {
     connection.query("SELECT SUM(Reste) AS aPaye FROM payment",(error , rows , fields)=>{

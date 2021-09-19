@@ -55,41 +55,41 @@ router.get("/get_detalie_payment_contra/:num_contra", async (req, res) => {
 });
 //
 router.delete("/delete/:id", async (req, res) => {
-  try {
+  // try {
     connection.query(
       "DELETE FROM payment WHERE id = ?",
       [req.params.id],
       (error, rows, fields) => {
         if (rows.affectedRows != 0) {
-          res.status(200).send("deleted successfully");
-        } else {
-          res.status(404).send("id not found");
-        }
+          res.status(200).json({ msg: "deleted succesfully" });
+      } else {
+        res.status(404).json({ msg: "id not found" });
+      }
       }
     );
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("server error");
-  }
+  // } catch (error) {
+  //   console.error(error.message);
+  //   res.status(500).send("server error");
+  // }
 });
 
 router.patch("/update/:id", async (req, res) => {
-  try {
+  // try {
     connection.query(
       "UPDATE payment SET Contrat = ?,Date = ?,Mensualite = ?,PaiedAmmount = ?, dp = ?, Reste = ?,Validation= ? WHERE id = ?",
       [req.body.contrat,req.body.date,req.body.mensualite,req.body.paiedAmmount,req.body.dp,req.body.reste,req.body.validation,req.params.id],
       (error, rows, fields) => {
-        if (rows) {
-          res.status(200).send("updated succesfully");
+        if (rows.affectedRows != 0) {
+          res.status(200).json({msg:"updated succesffuly"});
         } else {
-          res.status(404).send('id not found');
+          res.status(404).json({msg:"id not found"});
         }
       }
     );
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("server error");
-  }
+  // } catch (error) {
+  //   console.error(error.message);
+  //   res.status(500).send("server error");
+  // }
 });
 
 router.post("/post", async (req, res) => {
@@ -112,24 +112,27 @@ router.post("/post", async (req, res) => {
   // }
 });
 
-router.get('/get-payment',async(req,res)=>{
-  try {
-    connection.query("SELECT * FROM payment WHERE Contrat = ? AND PaiedAmmount = '0'",[req.body.contrat],(error , rows , fields)=>{
-      if(rows.length > 0){
-        connection.query("UPDATE payment SET PaiedAmmount = ? , Reste = '0' WHERE id = ? AND Contrat = ?",[rows[0].Mensualite,rows[0].id,rows[0].Contrat],(error , rows , fields)=>{
+router.post('/payment-contra',async(req,res)=>{
+  // try {
+    let ts = Date.now();
+let date_ob = new Date(ts);
+const date_db=(date_ob.getDate() + "-" + (date_ob.getMonth() + 1) + "-" + date_ob.getFullYear());
+connection.query("SELECT * FROM payment WHERE Contrat = ? AND PaiedAmmount = '0'",[req.body.contrat],(error , rows , fields)=>{
+  if(rows.length > 0){
+        console.log(rows[0]);
+        connection.query("UPDATE payment SET PaiedAmmount = ? , Reste = '0',dp = ? WHERE id = ? AND Contrat = ?",[rows[0].Mensualite,date_db,rows[0].id,rows[0].Contrat],(error , rows , fields)=>{
           if(rows.affectedRows != 0){
-            res.status(200).send('done');
+            res.status(200).json({msg:'done'});
           }else{
-            res.status(500).send('somthing went wrong');
+            res.status(500).json({msg:'somthing went wrong'});
           }
         })
-
       }else{
-        res.status(404).send('no payment found for this contract');
+        res.status(404).json({msg:'no payment found for this contract'});
       }
     })
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send('server error');
-  }
+  // } catch (error) {
+  //   console.error(error.message);
+  //   res.status(500).send('server error');
+  // }
 })

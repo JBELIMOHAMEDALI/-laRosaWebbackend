@@ -163,6 +163,11 @@ router.get("/getContraBayNumro/:num_contra", async (req, res) => {
   );
 });
 
+
+
+
+
+
 router.get("/stat-contrat", async (req, res) => {
   try {
     if (
@@ -275,4 +280,4 @@ router.get("/stat-contrat", async (req, res) => {
     res.status(500).send("server error");
   }
 });
-//
+//other 
