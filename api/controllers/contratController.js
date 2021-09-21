@@ -168,7 +168,7 @@ router.get("/getContraBayNumro/:num_contra", async (req, res) => {
 
 
 
-router.get("/stat-contrat", async (req, res) => {
+router.post("/stat-contrat", async (req, res) => {
   try {
     if (
       req.body.client == "" &&

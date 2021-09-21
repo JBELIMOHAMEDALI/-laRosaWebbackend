@@ -40,6 +40,14 @@ router.get("/getInfoAgontBs/:id", async (req, res) => {
   }
 });
 
+
+
+
+
+
+
+
+
 router.get("/statContrat", async (req, res) => {
   try {
     connection.query(
